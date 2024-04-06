@@ -1,4 +1,5 @@
 import { defineStore } from "pinia";
+import { toast } from "vue-sonner";
 
 export interface UserPayloadInterface {
   email: string;
@@ -21,23 +22,24 @@ export const useAuthStore = defineStore("auth", {
           if (users.value) {
             if (
               !users.value?.find(
-                (user: UserPayloadInterface) => user.email === payload.email,
+                (user: UserPayloadInterface) => user.email === payload.email
               )
             ) {
               users.value = [...users.value, payload];
               userCookie.value = payload;
               this.authenticated = true;
-              useRouter().push("/tasks");
+              useRouter().push("/");
             } else {
               if (process.client) {
-                useNuxtApp().$toast.error("email is exist!");
+                toast("email is exist!");
+                // useNuxtApp().$toast.error("email is exist!");
               }
             }
           } else if (!users.value) {
             users.value = [payload];
             userCookie.value = payload;
             this.authenticated = true;
-            useRouter().push("/tasks");
+            useRouter().push("/");
           }
           resolve(users);
         }, 300);
@@ -51,24 +53,27 @@ export const useAuthStore = defineStore("auth", {
 
           if (users.value) {
             const check = users.value?.find(
-              (user: UserPayloadInterface) => user.email === payload.email,
+              (user: UserPayloadInterface) => user.email === payload.email
             );
             if (!check) {
               if (process.client) {
-                useNuxtApp().$toast.error("email not exist");
+                // useNuxtApp().$toast.error("email not exist");
+                toast("email not exist");
               }
             } else if (check.password !== payload.password) {
               if (process.client) {
-                useNuxtApp().$toast.error("passwords do not match");
+                // useNuxtApp().$toast.error("passwords do not match");
+                toast("passwords do not match");
               }
             } else {
               userCookie.value = check;
               this.authenticated = true;
-              useRouter().push("/tasks");
+              useRouter().push("/");
             }
           } else if (!users.value) {
             if (process.client) {
-              useNuxtApp().$toast.error("user not exist!");
+              // useNuxtApp().$toast.error("user not exist!");
+              toast("user not exist!");
             }
           }
           resolve(users);

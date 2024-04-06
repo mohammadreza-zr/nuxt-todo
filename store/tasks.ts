@@ -11,7 +11,7 @@ export interface Task {
 }
 export interface Tasks {
   list: Task[];
-  name: string;
+  title: string;
   description: string;
   createdAt: Date;
   updatedAt: Date;
@@ -24,7 +24,7 @@ export const useTasksStore = defineStore("tasks", {
     },
   }),
   actions: {
-    addTasks: async function (payload: Pick<Tasks, "name" | "description">) {
+    addTasks: async function (payload: Pick<Tasks, "title" | "description">) {
       const userCookie = useCookie<UserPayloadInterface>("user").value;
       if (this.users[userCookie?.email]) {
         this.users[userCookie?.email] = [
@@ -46,8 +46,6 @@ export const useTasksStore = defineStore("tasks", {
           },
         ];
       }
-      payload.name = "";
-      payload.description = "";
     },
     removeTasks: async function (id: number) {
       const userCookie = useCookie<UserPayloadInterface>("user").value;
@@ -55,7 +53,7 @@ export const useTasksStore = defineStore("tasks", {
     },
     addTask: async function (
       payload: Pick<Task, "title" | "description" | "priority">,
-      index: number,
+      index: number
     ) {
       const userCookie = useCookie<UserPayloadInterface>("user").value;
       this.users[userCookie?.email][index].list = [
@@ -68,13 +66,10 @@ export const useTasksStore = defineStore("tasks", {
         },
       ];
       this.users[userCookie?.email][index].updatedAt = new Date();
-      payload.title = "";
-      payload.description = "";
-      payload.priority = "";
     },
     removeTask: async function (
       parentIndex: number,
-      index: number,
+      index: number
     ): Promise<void> {
       const userCookie = useCookie<UserPayloadInterface>("user").value;
       this.users[userCookie?.email][parentIndex].list.splice(index, 1);
@@ -83,7 +78,7 @@ export const useTasksStore = defineStore("tasks", {
     editTask: async function (
       payload: Pick<Task, "title" | "description" | "priority">,
       parentIndex: number,
-      index: number,
+      index: number
     ) {
       const userCookie = useCookie<UserPayloadInterface>("user").value;
       this.users[userCookie?.email][parentIndex].list[index] = {
@@ -91,9 +86,6 @@ export const useTasksStore = defineStore("tasks", {
         ...payload,
         updatedAt: new Date(),
       };
-      payload.title = "";
-      payload.description = "";
-      payload.priority = "";
       this.users[userCookie?.email][parentIndex].updatedAt = new Date();
     },
     doneTask: async function (parentIndex: number, index: number) {

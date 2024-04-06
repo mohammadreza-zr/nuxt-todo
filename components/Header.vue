@@ -1,17 +1,17 @@
 <script setup lang="ts">
-import { storeToRefs } from "pinia";
-import { useAuthStore } from "~/store/auth";
+  import { storeToRefs } from "pinia";
+  import { useAuthStore } from "~/store/auth";
 
-const { authenticated } = storeToRefs(useAuthStore()); // make authenticated state reactive with storeToRefs
+  const { authenticated } = storeToRefs(useAuthStore());
 
-const router = useRouter();
+  const router = useRouter();
 
-const { logUserOut } = useAuthStore(); // use authenticateUser action from  auth store
+  const { logUserOut } = useAuthStore();
 
-const logout = () => {
-  logUserOut();
-  router.push("/register");
-};
+  const logout = () => {
+    logUserOut();
+    router.push("/login");
+  };
 </script>
 
 <template>
@@ -27,7 +27,7 @@ const logout = () => {
         <NuxtLink href="/register">register</NuxtLink>
       </li>
       <li v-if="authenticated">
-        <NuxtLink href="/tasks">tasks</NuxtLink>
+        <NuxtLink href="/">tasks</NuxtLink>
       </li>
       <li v-if="authenticated">
         <NuxtLink @click="logout">Logout</NuxtLink>

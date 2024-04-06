@@ -1,6 +1,4 @@
-<script setup lang="ts">
-import "vue3-toastify/dist/index.css";
-</script>
+<script setup lang="ts"></script>
 
 <template>
   <div>
